@@ -1,4 +1,4 @@
-package practice.hutool_http_test;
+package code.hutool.http;
 
 import cn.hutool.core.lang.Console;
 import cn.hutool.http.HttpUtil;
