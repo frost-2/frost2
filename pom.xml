@@ -12,9 +12,9 @@
 		<version>5.2.5</version>
 	</parent>
 
-	<artifactId>hutool-http</artifactId>
+	<artifactId>frost2</artifactId>
 	<name>${project.artifactId}</name>
-	<description>Hutool Http客户端</description>
+	<description>日常记录</description>
 
 	<dependencies>
 		<!--hutool工具类-->
