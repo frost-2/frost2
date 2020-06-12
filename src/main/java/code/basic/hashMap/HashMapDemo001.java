@@ -10,7 +10,7 @@ public class HashMapDemo001{
 
     public static void main(String[] args) {
 
-        HashMap<HashMapDemo001, String> map = new HashMap<>();
+        HashMap<Object, String> map = new HashMap<>();
         map.put(new HashMapDemo001(),"value1");
         map.put(new HashMapDemo001(),"value2");
         map.put(new HashMapDemo001(),"value3");
@@ -20,10 +20,6 @@ public class HashMapDemo001{
         map.put(new HashMapDemo001(),"value7");
         map.put(new HashMapDemo001(),"value8");
         map.put(new HashMapDemo001(),"value9");
-        map.put(new HashMapDemo001(),"value10");
-        map.put(new HashMapDemo001(),"value11");
-        map.put(new HashMapDemo001(),"value12");
-        map.put(new HashMapDemo001(),"value13");
 
 
 //        System.out.println(Integer.highestOneBit((17 - 1) << 1));
