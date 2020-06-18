@@ -234,7 +234,7 @@ graph LR
 	A -.-> B
 ```
 
-#### 学习路线
+#### 4、学习路线
 
 ##### (1) mermaid流程图
 
@@ -278,5 +278,16 @@ e=>end: 结束
 st->op->cond
 cond(yes)->io(bottom)->e
 cond(no)->sub1(right)->op
+```
+
+#### 5、练习
+
+##### (1) 快桩PC架构图
+
+```mermaid
+graph LR
+	browser[浏览器] ---|HTTP| interface[接口]
+	swagger(接口文档) --- interface --> redis --- database
+	interface --> database[数据库]
 ```
 
