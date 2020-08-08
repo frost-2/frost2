@@ -6,11 +6,7 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -26,13 +22,13 @@ public class Distinct {
 
     public static void main(String[] args) {
 
-        Person sss1 = new Person().setName("sss").setAge("181");
-        Person sss2 = new Person().setName("sss").setAge("18");
+        Student sss1 = new Student().setName("sss").setAge("181");
+        Student sss2 = new Student().setName("sss").setAge("18");
         System.out.println("sss1.equals(sss2) = " + sss1.equals(sss2));
 
-        ArrayList<Person> list = Lists.newArrayList(sss1, sss2);
+        ArrayList<Student> list = Lists.newArrayList(sss1, sss2);
         Console.log(list);
-        List<Person> collect = list.stream().distinct().collect(Collectors.toList());
+        List<Student> collect = list.stream().distinct().collect(Collectors.toList());
         Console.log(collect);
 
     }
@@ -40,7 +36,7 @@ public class Distinct {
 }
 
 @ToString
-class Person {
+class Student {
 
     private String name;
     private String age;
@@ -49,7 +45,7 @@ class Person {
         return name;
     }
 
-    public Person setName(String name) {
+    public Student setName(String name) {
         this.name = name;
         return this;
     }
@@ -58,7 +54,7 @@ class Person {
         return age;
     }
 
-    public Person setAge(String age) {
+    public Student setAge(String age) {
         this.age = age;
         return this;
     }
@@ -67,8 +63,8 @@ class Person {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(name, person.name);
+        Student student = (Student) o;
+        return Objects.equals(name, student.name);
     }
 
     @Override

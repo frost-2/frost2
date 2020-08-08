@@ -54,10 +54,17 @@ public class DistinctByKey {
 
     }
 
-    //通过conCurrentHashMap实现去重
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+    /**
+     * List中保存对象时：
+     * 通过conCurrentHashMap实现根据属性去重
+     *
+     * @param function 流中元素需要执行的函数
+     * @param <T>      流中元素
+     * @return Predicate
+     */
+    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> function) {
         Map<Object, Boolean> map = new ConcurrentHashMap<>();
-        return t -> map.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+        return t -> map.putIfAbsent(function.apply(t), Boolean.TRUE) == null;
     }
 
 }
