@@ -1,12 +1,11 @@
 package code.basic.stream;
 
 import cn.hutool.core.lang.Console;
+import code.basic.Student;
 import com.google.common.collect.Lists;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -35,40 +34,3 @@ public class Distinct {
 
 }
 
-@ToString
-class Student {
-
-    private String name;
-    private String age;
-
-    public String getName() {
-        return name;
-    }
-
-    public Student setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getAge() {
-        return age;
-    }
-
-    public Student setAge(String age) {
-        this.age = age;
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return Objects.equals(name, student.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-}

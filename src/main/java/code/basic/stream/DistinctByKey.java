@@ -1,12 +1,10 @@
 package code.basic.stream;
 
-import lombok.Getter;
-import lombok.Setter;
+import code.basic.Book;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -77,29 +75,3 @@ class test {
     }
 }
 
-@Getter
-@Setter
-class Book {
-
-    private String name;
-    private int price;
-
-    public Book(String name, int price) {
-        this.name = name;
-        this.price = price;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return price == book.price &&
-                Objects.equals(name, book.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, price);
-    }
-}

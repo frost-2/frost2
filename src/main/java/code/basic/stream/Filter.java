@@ -1,8 +1,6 @@
 package code.basic.stream;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import code.basic.Person;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,16 +51,3 @@ public class Filter {
 
 }
 
-@Getter
-@Setter
-@ToString
-class Person {
-
-    private String firstName;
-    private String lastName;
-
-    public Person(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-}
