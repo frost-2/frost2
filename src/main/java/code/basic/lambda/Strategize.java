@@ -4,7 +4,7 @@ package code.basic.lambda;
  * 该例来源于《On Java8》第十三章
  *
  * @author 陈伟平
- * @date 2020-08-05-下午 2:58
+ * @date 2020-08-05 2:58:00
  */
 interface Strategy {
     String approach(String msg);

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author 陈伟平
- * @date 2020-08-08-下午 2:18
+ * @date 2020-08-08 2:18:00
  */
 public class Collect {
     public static void main(String[] args) {
