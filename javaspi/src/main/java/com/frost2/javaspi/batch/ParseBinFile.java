@@ -1,9 +1,9 @@
 package com.frost2.javaspi.batch;
 
-import code.business.importData.spi.IParseBinFile;
-import code.business.importData.spi.IParseXmlFile;
-import code.business.importData.spi.impl.ParseBinFileImpl;
-import code.business.importData.spi.impl.ParseXmlFileImpl;
+import com.frost2.javaspi.spi.IParseBinFile;
+import com.frost2.javaspi.spi.IParseXmlFile;
+import com.frost2.javaspi.spi.impl.ParseBinFileImpl;
+import com.frost2.javaspi.spi.impl.ParseXmlFileImpl;
 
 import java.sql.Connection;
 import java.util.HashMap;

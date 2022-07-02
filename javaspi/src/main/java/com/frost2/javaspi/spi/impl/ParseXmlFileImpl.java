@@ -1,6 +1,6 @@
 package com.frost2.javaspi.spi.impl;
 
-import code.business.importData.spi.IParseXmlFile;
+import com.frost2.javaspi.spi.IParseXmlFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
