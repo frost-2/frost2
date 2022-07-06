@@ -48,7 +48,6 @@ public class ParseXmlFileImpl implements IParseXmlFile {
             fieldMap.put("COLUMN", fieldElement.getAttribute("COLUMN"));
             fieldMap.put("WIDTH", fieldElement.getAttribute("WIDTH"));
             fieldMap.put("DESC", fieldElement.getAttribute("DESC"));
-            fieldMap.put("FILTER", fieldElement.getAttribute("FILTER"));
             fieldMap.put("FIELDHANDLER", fieldElement.getAttribute("FIELDHANDLER"));
             list.add(fieldMap);
         }

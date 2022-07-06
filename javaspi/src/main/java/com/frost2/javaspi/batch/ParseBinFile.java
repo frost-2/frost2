@@ -6,6 +6,7 @@ import com.frost2.javaspi.spi.impl.ParseBinFileImpl;
 import com.frost2.javaspi.spi.impl.ParseXmlFileImpl;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,9 +19,13 @@ import java.util.ServiceLoader;
 public class ParseBinFile {
 
     public static void main(String[] args) throws Exception {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://8.135.25.37:3306/frost2?useUnicode=true&useSSL=false&characterEncoding=UTF-8", "root", "WeiPing@1004");
         String xmlFilePath = "E:\\Frost2-Files\\IdeaWorkSpace\\temp\\javaSpi\\test.xml";
+        //该文件夹只保存bin文件
+        String binFileDir = "E:\\Frost2-Files\\IdeaWorkSpace\\temp\\javaSpi\\bin";
         ParseBinFile parseBinFile = new ParseBinFile();
-        parseBinFile.impData(xmlFilePath, "", null);
+        parseBinFile.impData(xmlFilePath, binFileDir, conn);
     }
 
     /**

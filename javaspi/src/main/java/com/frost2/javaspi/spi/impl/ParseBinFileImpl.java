@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author frost2
@@ -24,7 +25,9 @@ public class ParseBinFileImpl implements IParseBinFile {
         for (String fileName : folders) {
             String binPath = binFileDir + File.separator + fileName;
             //TODO:线程池并发
-            saveBinFile(conn, xmlList, binPath);
+            if (fileName.endsWith(".bin")) {
+                saveBinFile(conn, xmlList, binPath);
+            }
         }
     }
 
@@ -33,11 +36,12 @@ public class ParseBinFileImpl implements IParseBinFile {
         //逐行解析bin文件，将数据保存到binList中
         String fileEncode = xmlList.get(0).get("FILE_ENCODE");
         Files.lines(Paths.get(binPath), Charset.forName(fileEncode)).forEach(line -> {
-            binList.add(fieldValueHandle(xmlList, line));
+            binList.add(fieldValueHandle(xmlList.stream().skip(1).collect(Collectors.toList()), line));
         });
-        //TODO:数据入库
-
-
+        //数据入库
+        if (!binList.isEmpty()) {
+            FileImport.batchInsert(conn, binList, xmlList);
+        }
     }
 
     //处理行数据,将数据保存到map
@@ -54,12 +58,7 @@ public class ParseBinFileImpl implements IParseBinFile {
             if ("Y".equalsIgnoreCase(fieldHandler)) {
                 field = fieldValueHandler(field);
             }
-
-            String filter = binMap.get("FILTER");
-            if (!"Y".equalsIgnoreCase(filter)) {
-                fieldMap.put(column, field);
-            }
-
+            fieldMap.put(column, field);
         }
         return fieldMap;
     }
