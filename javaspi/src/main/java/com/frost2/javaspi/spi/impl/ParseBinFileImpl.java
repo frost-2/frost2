@@ -1,6 +1,8 @@
 package com.frost2.javaspi.spi.impl;
 
 import com.frost2.javaspi.batch.FileImport;
+import com.frost2.javaspi.common.StringUtils;
+import com.frost2.javaspi.spi.IFieldValueHandler;
 import com.frost2.javaspi.spi.IParseBinFile;
 
 import java.io.File;
@@ -8,9 +10,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author frost2
@@ -33,20 +33,43 @@ public class ParseBinFileImpl implements IParseBinFile {
         //逐行解析bin文件，将数据保存到binList中
         String fileEncode = xmlList.get(0).get("FILE_ENCODE");
         Files.lines(Paths.get(binPath), Charset.forName(fileEncode)).forEach(line -> {
-            binList.add(fieldValueHandle(xmlList,line));
+            binList.add(fieldValueHandle(xmlList, line));
         });
-        //数据入库
+        //TODO:数据入库
+
+
     }
 
+    //处理行数据,将数据保存到map
     private HashMap<String, String> fieldValueHandle(List<HashMap<String, String>> xmlList, String line) {
         HashMap<String, String> fieldMap = new HashMap<>();
-        xmlList.forEach(binMap -> {
+        for (HashMap<String, String> binMap : xmlList) {
             String column = binMap.get("COLUMN");
-            int width = Integer.parseInt(binMap.get("WIDTH"));
-            String filter = binMap.get("FILTER");
-            String fieldHandler = binMap.get("FIELDHANDLER");
 
-        });
+            int width = Integer.parseInt(binMap.get("WIDTH"));
+            String field = StringUtils.substring(line, width);
+            line = StringUtils.replaceFirst(line, field);
+
+            String fieldHandler = binMap.get("FIELDHANDLER");
+            if ("Y".equalsIgnoreCase(fieldHandler)) {
+                field = fieldValueHandler(field);
+            }
+
+            String filter = binMap.get("FILTER");
+            if (!"Y".equalsIgnoreCase(filter)) {
+                fieldMap.put(column, field);
+            }
+
+        }
         return fieldMap;
+    }
+
+    //多个实现类，按照行顺序依次处理filed
+    private String fieldValueHandler(String field) {
+        ServiceLoader<IFieldValueHandler> serviceLoader = ServiceLoader.load(IFieldValueHandler.class);
+        for (IFieldValueHandler fieldValueHandler : serviceLoader) {
+            field = fieldValueHandler.transfer(field);
+        }
+        return field;
     }
 }

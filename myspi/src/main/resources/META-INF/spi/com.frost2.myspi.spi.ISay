@@ -1,0 +1,3 @@
+yellow:com.frost2.myspi.spi.impl.YellowSay
+blacksay:com.frost2.myspi.spi.impl.BlackSay
+whitesay:com.frost2.myspi.spi.impl.WhiteSay
