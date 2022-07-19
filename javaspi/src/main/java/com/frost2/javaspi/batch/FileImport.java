@@ -1,5 +1,7 @@
 package com.frost2.javaspi.batch;
 
+import com.frost2.javaspi.common.XMLField;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.CallableStatement;
@@ -54,7 +56,7 @@ public class FileImport {
         String insertSql = cretePrepareSql(xmlList);
         PreparedStatement stmt = conn.prepareStatement(insertSql);
 
-        int batchNum = Integer.parseInt(xmlList.get(0).get("BATCH_NUM"));
+        int batchNum = Integer.parseInt(xmlList.get(0).get(XMLField.BATCH_NUM));
 
         //i从1开始，避免i为0时，i%batchNum=0，提前触发批量执行
         int size = binList.size() + 1;
@@ -62,7 +64,7 @@ public class FileImport {
             //循环xml文件,匹配字段和字段值
             for (int j = 1; j < xmlList.size(); j++) {
                 HashMap<String, String> map = xmlList.get(j);
-                String column = map.get("COLUMN");
+                String column = map.get(XMLField.COLUMN);
                 stmt.setString(j, binList.get(i - 1).get(column).trim());
             }
             //分批处理
@@ -80,12 +82,12 @@ public class FileImport {
 
     //生成预插入语句
     private static String cretePrepareSql(List<HashMap<String, String>> xmlList) {
-        String tableName = xmlList.get(0).get("TABLE_NAME");
+        String tableName = xmlList.get(0).get(XMLField.TABLE_NAME);
         xmlList = xmlList.stream().skip(1).collect(Collectors.toList());
         StringBuilder head = new StringBuilder("insert into " + tableName + "(");
         StringBuilder tail = new StringBuilder(") values(");
         for (HashMap<String, String> map : xmlList) {
-            String column = map.get("COLUMN") + ",";
+            String column = map.get(XMLField.COLUMN) + ",";
             head.append(column);
             tail.append("?,");
         }

@@ -1,10 +1,12 @@
 package com.frost2.javaspi.spi.impl;
 
+import com.frost2.javaspi.common.XMLField;
 import com.frost2.javaspi.spi.IParseXmlFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -31,24 +33,24 @@ public class ParseXmlFileImpl implements IParseXmlFile {
         Document document = documentBuilder.parse(file);
 
         //bin文件摘要信息
-        NodeList summaryNode = document.getElementsByTagName("FILE_SUMMARY");
+        NodeList summaryNode = document.getElementsByTagName(XMLField.FILE_SUMMARY);
         Element element = (Element) summaryNode.item(0);
         HashMap<String, String> summaryMap = new HashMap<>();
-        summaryMap.put("FILE_NAME", element.getAttribute("FILE_NAME"));
-        summaryMap.put("TABLE_NAME", element.getAttribute("TABLE_NAME"));
-        summaryMap.put("BATCH_NUM", element.getAttribute("BATCH_NUM"));
-        summaryMap.put("FILE_ENCODE", element.getAttribute("FILE_ENCODE"));
+        summaryMap.put(XMLField.FILE_NAME, element.getAttribute(XMLField.FILE_NAME));
+        summaryMap.put(XMLField.TABLE_NAME, element.getAttribute(XMLField.TABLE_NAME));
+        summaryMap.put(XMLField.BATCH_NUM, element.getAttribute(XMLField.BATCH_NUM));
+        summaryMap.put(XMLField.FILE_ENCODE, element.getAttribute(XMLField.FILE_ENCODE));
         list.add(summaryMap);
 
         //bin文件字段信息
-        NodeList fieldNode = document.getElementsByTagName("FIELD");
+        NodeList fieldNode = document.getElementsByTagName(XMLField.FIELD);
         for (int i = 0; i < fieldNode.getLength(); i++) {
             HashMap<String, String> fieldMap = new HashMap<>();
             Element fieldElement = (Element) fieldNode.item(i);
-            fieldMap.put("COLUMN", fieldElement.getAttribute("COLUMN"));
-            fieldMap.put("WIDTH", fieldElement.getAttribute("WIDTH"));
-            fieldMap.put("DESC", fieldElement.getAttribute("DESC"));
-            fieldMap.put("FIELDHANDLER", fieldElement.getAttribute("FIELDHANDLER"));
+            fieldMap.put(XMLField.COLUMN, fieldElement.getAttribute(XMLField.COLUMN));
+            fieldMap.put(XMLField.WIDTH, fieldElement.getAttribute(XMLField.WIDTH));
+            fieldMap.put(XMLField.DESC, fieldElement.getAttribute(XMLField.DESC));
+            fieldMap.put(XMLField.FIELD_HANDLER, fieldElement.getAttribute(XMLField.FIELD_HANDLER));
             list.add(fieldMap);
         }
         return list;

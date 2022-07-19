@@ -1,5 +1,6 @@
 package com.frost2.javaspi.batch;
 
+import com.frost2.javaspi.common.XMLField;
 import com.frost2.javaspi.spi.IParseBinFile;
 import com.frost2.javaspi.spi.IParseXmlFile;
 import com.frost2.javaspi.spi.impl.ParseBinFileImpl;
@@ -43,7 +44,7 @@ public class ParseBinFile {
 
         //导入策略:先清空后添加
         HashMap<String, String> summary = xmlList.get(0);
-        FileImport.truncate(conn, summary.get("TABLE_NAME"));
+        FileImport.truncate(conn, summary.get(XMLField.TABLE_NAME));
 
         //处理BIN文件
         parseBinFile(conn, xmlList, binFileDir);

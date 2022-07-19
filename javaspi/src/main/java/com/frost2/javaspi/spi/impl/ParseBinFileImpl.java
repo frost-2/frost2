@@ -2,6 +2,7 @@ package com.frost2.javaspi.spi.impl;
 
 import com.frost2.javaspi.batch.FileImport;
 import com.frost2.javaspi.common.StringUtils;
+import com.frost2.javaspi.common.XMLField;
 import com.frost2.javaspi.spi.IFieldValueHandler;
 import com.frost2.javaspi.spi.IParseBinFile;
 
@@ -34,7 +35,7 @@ public class ParseBinFileImpl implements IParseBinFile {
     private void saveBinFile(Connection conn, List<HashMap<String, String>> xmlList, String binPath) throws Exception {
         ArrayList<HashMap<String, String>> binList = new ArrayList<>(); //key:字段名,value:字段值
         //逐行解析bin文件，将数据保存到binList中
-        String fileEncode = xmlList.get(0).get("FILE_ENCODE");
+        String fileEncode = xmlList.get(0).get(XMLField.FILE_ENCODE);
         Files.lines(Paths.get(binPath), Charset.forName(fileEncode)).forEach(line -> {
             binList.add(fieldValueHandle(xmlList.stream().skip(1).collect(Collectors.toList()), line));
         });
@@ -48,13 +49,13 @@ public class ParseBinFileImpl implements IParseBinFile {
     private HashMap<String, String> fieldValueHandle(List<HashMap<String, String>> xmlList, String line) {
         HashMap<String, String> fieldMap = new HashMap<>();
         for (HashMap<String, String> binMap : xmlList) {
-            String column = binMap.get("COLUMN");
+            String column = binMap.get(XMLField.COLUMN);
 
-            int width = Integer.parseInt(binMap.get("WIDTH"));
+            int width = Integer.parseInt(binMap.get(XMLField.WIDTH));
             String field = StringUtils.substring(line, width);
             line = StringUtils.replaceFirst(line, field);
 
-            String fieldHandler = binMap.get("FIELDHANDLER");
+            String fieldHandler = binMap.get(XMLField.FIELD_HANDLER);
             if ("Y".equalsIgnoreCase(fieldHandler)) {
                 field = fieldValueHandler(field);
             }
