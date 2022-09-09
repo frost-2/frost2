@@ -17,16 +17,17 @@ import java.util.ServiceLoader;
  * @author frost2
  * @date 2022-06-30 11:19
  */
-public class ParseBinFile {
+public class BinFileImport extends BinFileBase {
+
 
     public static void main(String[] args) throws Exception {
         Class.forName("com.mysql.jdbc.Driver");
         Connection conn = DriverManager.getConnection("jdbc:mysql://8.135.25.37:3306/frost2?useUnicode=true&useSSL=false&characterEncoding=UTF-8", "root", "WeiPing@1004");
         String xmlFilePath = "E:\\Frost2-Files\\IdeaWorkSpace\\temp\\javaSpi\\test.xml";
-        //该文件夹只保存bin文件
+        /*该文件夹只保存bin文件*/
         String binFileDir = "E:\\Frost2-Files\\IdeaWorkSpace\\temp\\javaSpi\\bin";
-        ParseBinFile parseBinFile = new ParseBinFile();
-        parseBinFile.impData(xmlFilePath, binFileDir, conn);
+        BinFileImport binFileImport = new BinFileImport();
+        binFileImport.impData(xmlFilePath, binFileDir, conn);
     }
 
     /**
@@ -39,16 +40,25 @@ public class ParseBinFile {
      */
     public void impData(String xmlFilePath, String binFileDir, Connection conn) throws Exception {
 
-        //解析XML文件获取规则
+        /*解析XML文件获取规则*/
         List<HashMap<String, String>> xmlList = parseXmlFile(xmlFilePath);
-
-        //导入策略:先清空后添加
+//        initParam(xmlList);
+        /*导入策略:先清空后添加*/
         HashMap<String, String> summary = xmlList.get(0);
         FileImport.truncate(conn, summary.get(XMLField.TABLE_NAME));
 
-        //处理BIN文件
+        /*处理BIN文件*/
         parseBinFile(conn, xmlList, binFileDir);
     }
+
+//    public BinFileImport(HashMap<String, String> summary) {
+//        super(summary);
+//    }
+//
+//    //初始化参数
+//    private void initParam(List<HashMap<String, String>> xmlList) {
+//        new BinFileImport(xmlList.get(0));
+//    }
 
     /**
      * JAVA SPI实现解析XML文件,如果不存在扩展则使用默认的方法解析XML文件。
@@ -61,12 +71,17 @@ public class ParseBinFile {
         ServiceLoader<IParseXmlFile> serviceLoader = ServiceLoader.load(IParseXmlFile.class);
         Iterator<IParseXmlFile> iterator = serviceLoader.iterator();
         IParseXmlFile parseXmlFile;
-        //多个实现类取第一个
+        /*多个实现类取第一个*/
         if (iterator.hasNext()) {
             parseXmlFile = iterator.next();
         } else {
             parseXmlFile = new ParseXmlFileImpl();
         }
+
+//        MiniServiceLoader miniServiceLoader = MiniServiceLoader.getInstance();
+//        IParseXmlFile iParseXmlFile = miniServiceLoader.get(IParseXmlFile.class, PARSING_XML);
+//        return iParseXmlFile.parseXmlFile(xmlFilePath);
+
         return parseXmlFile.parseXmlFile(xmlFilePath);
     }
 
@@ -75,13 +90,13 @@ public class ParseBinFile {
      *
      * @param conn       JDBC连接
      * @param xmlList    BIN文件规则信息
-     * @param binFileDir bin文件所在文件夹
+     * @param binFileDir BIN文件所在文件夹
      */
     private void parseBinFile(Connection conn, List<HashMap<String, String>> xmlList, String binFileDir) throws Exception {
         ServiceLoader<IParseBinFile> serviceLoader = ServiceLoader.load(IParseBinFile.class);
         Iterator<IParseBinFile> iterator = serviceLoader.iterator();
         IParseBinFile parseBinFile;
-        //多个实现类取第一个
+        /*多个实现类取第一个*/
         if (iterator.hasNext()) {
             parseBinFile = iterator.next();
         } else {

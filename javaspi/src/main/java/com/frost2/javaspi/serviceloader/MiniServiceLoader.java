@@ -20,7 +20,7 @@ public class MiniServiceLoader {
     private static final String prefix = "/META-INF/spi/";
     private static volatile MiniServiceLoader instance = null;
     //缓存所有配置文件中的别名和实现类,保存时key值为接口路径+别名
-    private final Map<String, String> aliasMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, String> aliasMap = new ConcurrentHashMap<>();
 
     private MiniServiceLoader() {
     }

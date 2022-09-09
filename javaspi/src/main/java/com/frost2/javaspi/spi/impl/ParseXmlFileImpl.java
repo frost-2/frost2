@@ -6,7 +6,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -40,6 +39,8 @@ public class ParseXmlFileImpl implements IParseXmlFile {
         summaryMap.put(XMLField.TABLE_NAME, element.getAttribute(XMLField.TABLE_NAME));
         summaryMap.put(XMLField.BATCH_NUM, element.getAttribute(XMLField.BATCH_NUM));
         summaryMap.put(XMLField.FILE_ENCODE, element.getAttribute(XMLField.FILE_ENCODE));
+        summaryMap.put(XMLField.FIELD_HANDLER, element.getAttribute(XMLField.FIELD_HANDLER));
+        summaryMap.put(XMLField.PARSING_XML, element.getAttribute(XMLField.PARSING_XML));
         list.add(summaryMap);
 
         //bin文件字段信息
