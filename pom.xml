@@ -17,8 +17,8 @@
 
     <modules>
         <module>http</module>
-        <module>javaspi</module>
-        <module>javabasic</module>
+        <module>java-spi</module>
+        <module>java-basic</module>
     </modules>
 
     <properties>
