@@ -15,7 +15,7 @@ import java.util.Map;
 @SuppressWarnings("all")
 @SpringBootApplication
 @MapperScan(basePackages = "com.frost2.pwdseparate.mapper")
-public class PwdSeparateApplication implements ApplicationRunner {
+public class HikariApplicationStater implements ApplicationRunner {
 
     @Autowired(required = false)
     private JdbcTemplate jdbcTemplate;
@@ -23,7 +23,7 @@ public class PwdSeparateApplication implements ApplicationRunner {
     private FrostMapper frostMapper;
 
     public static void main(String[] args) {
-        SpringApplication.run(PwdSeparateApplication.class, args);
+        SpringApplication.run(HikariApplicationStater.class, args);
     }
 
     @Override

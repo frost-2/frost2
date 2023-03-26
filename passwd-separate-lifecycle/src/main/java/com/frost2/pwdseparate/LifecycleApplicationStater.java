@@ -7,15 +7,17 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("all")
+@ImportResource(locations = {"classpath:spring/*.xml"})
 @SpringBootApplication
 @MapperScan(basePackages = "com.frost2.pwdseparate.mapper")
-public class PwdSeparateApplication implements ApplicationRunner {
+public class LifecycleApplicationStater implements ApplicationRunner {
 
     @Autowired(required = false)
     private JdbcTemplate jdbcTemplate;
@@ -23,7 +25,7 @@ public class PwdSeparateApplication implements ApplicationRunner {
     private FrostMapper frostMapper;
 
     public static void main(String[] args) {
-        SpringApplication.run(PwdSeparateApplication.class, args);
+        SpringApplication.run(LifecycleApplicationStater.class, args);
     }
 
     @Override
