@@ -17,12 +17,12 @@ import java.util.ServiceLoader;
  * @author frost2
  * @date 2022-06-30 11:19
  */
-public class BinFileImport extends BinFileBase {
+public class BinFileImport {
 
 
     public static void main(String[] args) throws Exception {
         Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:mysql://8.135.25.37:3306/frost2?useUnicode=true&useSSL=false&characterEncoding=UTF-8", "root", "WeiPing@1004");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.40.129:3306/frost2?useUnicode=true&useSSL=false&characterEncoding=UTF-8", "root", "root");
         String xmlFilePath = "E:\\Frost2-Files\\IdeaWorkSpace\\temp\\javaSpi\\test.xml";
         /*该文件夹只保存bin文件*/
         String binFileDir = "E:\\Frost2-Files\\IdeaWorkSpace\\temp\\javaSpi\\bin";
@@ -42,7 +42,6 @@ public class BinFileImport extends BinFileBase {
 
         /*解析XML文件获取规则*/
         List<HashMap<String, String>> xmlList = parseXmlFile(xmlFilePath);
-//        initParam(xmlList);
         /*导入策略:先清空后添加*/
         HashMap<String, String> summary = xmlList.get(0);
         FileImport.truncate(conn, summary.get(XMLField.TABLE_NAME));
@@ -51,14 +50,6 @@ public class BinFileImport extends BinFileBase {
         parseBinFile(conn, xmlList, binFileDir);
     }
 
-//    public BinFileImport(HashMap<String, String> summary) {
-//        super(summary);
-//    }
-//
-//    //初始化参数
-//    private void initParam(List<HashMap<String, String>> xmlList) {
-//        new BinFileImport(xmlList.get(0));
-//    }
 
     /**
      * JAVA SPI实现解析XML文件,如果不存在扩展则使用默认的方法解析XML文件。

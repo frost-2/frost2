@@ -1,6 +1,5 @@
 package com.frost2.javaspi.spi.impl;
 
-import com.frost2.javaspi.batch.BinFileBase;
 import com.frost2.javaspi.batch.FileImport;
 import com.frost2.javaspi.common.StringUtils;
 import com.frost2.javaspi.common.XMLField;
@@ -19,11 +18,10 @@ import java.util.stream.Collectors;
  * @author frost2
  * @date 2022-06-30 15:42
  */
-public class ParseBinFileImpl extends BinFileBase implements IParseBinFile {
+public class ParseBinFileImpl implements IParseBinFile {
 
     @Override
     public void parseBinFile(Connection conn, List<HashMap<String, String>> xmlList, String binFileDir) throws Exception {
-        System.out.println(PARSING_XML);
 
         String[] folders = FileImport.getFolder(binFileDir);
         for (String fileName : folders) {
