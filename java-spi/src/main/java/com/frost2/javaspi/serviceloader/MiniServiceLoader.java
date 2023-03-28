@@ -1,11 +1,18 @@
 package com.frost2.javaspi.serviceloader;
 
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.StringUtils;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 
 /**
  * 基于约定:
@@ -16,8 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MiniServiceLoader {
 
-    //spi文件前缀
-    private static final String prefix = "/META-INF/spi/";
     private static volatile MiniServiceLoader instance = null;
     //缓存所有配置文件中的别名和实现类,保存时key值为接口路径+别名
     private final ConcurrentHashMap<String, String> aliasMap = new ConcurrentHashMap<>();
@@ -45,18 +50,58 @@ public class MiniServiceLoader {
         String key = clazz.getName() + "_" + alias;
         String className = aliasMap.get(key);
         if (null == className) {
-            init(clazz);
+            //方式一
+            ObtainInterFaceProp(clazz);
         }
         Class<?> aClass = Class.forName(aliasMap.get(key));
         return (T) aClass.newInstance();
     }
 
-    //初始化读取配置接口信息
-    private <T> void init(Class<T> clazz) {
-        InputStream in = this.getClass().getResourceAsStream(prefix + clazz.getName());
+    /**
+     * 通过classloader读取文件信息是,路径不能以/开头
+     */
+    private <T> void ObtainInterFaceProp(Class<T> clazz) {
+        String PREFIX = "/META-INF/extension/";
+        InputStream in = this.getClass().getResourceAsStream(PREFIX + clazz.getName());
         BufferedReader r = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         r.lines().forEachOrdered(line -> parseLine(line, clazz.getName()));
     }
+
+    /**
+     * SpringFactoriesLoader读取文件采用如下方式
+     * 注:
+     * (1)通过classloader读取文件信息是,路径不能以/开头
+     * (2)这种方式可以支持多个value,使用逗号分隔即可
+     */
+    private <T> Map<String, List<String>> ObtainInterFaceProp1(Class<T> clazz) {
+
+        String PREFIX = "META-INF/extension/";
+        Map<String, List<String>> result = new HashMap<>();
+        try {
+            Enumeration<URL> urls = this.getClass().getClassLoader().getResources(PREFIX + clazz.getName());
+
+            while (urls.hasMoreElements()) {
+                URL url = urls.nextElement();
+                UrlResource resource = new UrlResource(url);
+                //根据:=和空格切分行生成Properties
+                Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+                for (Map.Entry<?, ?> entry : properties.entrySet()) {
+                    String factoryTypeName = ((String) entry.getKey()).trim();
+                    String[] factoryImplementationNames =
+                            StringUtils.commaDelimitedListToStringArray((String) entry.getValue());
+                    for (String factoryImplementationName : factoryImplementationNames) {
+                        result.computeIfAbsent(factoryTypeName, key -> new ArrayList<>())
+                                .add(factoryImplementationName.trim());
+                    }
+                }
+            }
+
+        } catch (IOException ignored) {
+
+        }
+        return result;
+    }
+
 
     //按:切分行,将别名/实现类保存到aliasMap
     private void parseLine(String line, String name) {

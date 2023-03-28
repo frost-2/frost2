@@ -1,10 +1,10 @@
 package com.frost2.javaspi.batch;
 
 import com.frost2.javaspi.common.XMLField;
+import com.frost2.javaspi.serviceloader.MiniServiceLoader;
 import com.frost2.javaspi.spi.IParseBinFile;
 import com.frost2.javaspi.spi.IParseXmlFile;
 import com.frost2.javaspi.spi.impl.ParseBinFileImpl;
-import com.frost2.javaspi.spi.impl.ParseXmlFileImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -59,21 +59,24 @@ public class BinFileImport {
      * @return bin文件规则信息
      */
     private List<HashMap<String, String>> parseXmlFile(String xmlFilePath) throws Exception {
-        ServiceLoader<IParseXmlFile> serviceLoader = ServiceLoader.load(IParseXmlFile.class);
-        Iterator<IParseXmlFile> iterator = serviceLoader.iterator();
-        IParseXmlFile parseXmlFile;
-        /*多个实现类取第一个*/
-        if (iterator.hasNext()) {
-            parseXmlFile = iterator.next();
-        } else {
-            parseXmlFile = new ParseXmlFileImpl();
-        }
 
-//        MiniServiceLoader miniServiceLoader = MiniServiceLoader.getInstance();
-//        IParseXmlFile iParseXmlFile = miniServiceLoader.get(IParseXmlFile.class, PARSING_XML);
-//        return iParseXmlFile.parseXmlFile(xmlFilePath);
+//        //JAVASPI
+//        ServiceLoader<IParseXmlFile> serviceLoader = ServiceLoader.load(IParseXmlFile.class);
+//        Iterator<IParseXmlFile> iterator = serviceLoader.iterator();
+//        IParseXmlFile parseXmlFile;
+//        /*多个实现类取第一个*/
+//        if (iterator.hasNext()) {
+//            parseXmlFile = iterator.next();
+//        } else {
+//            parseXmlFile = new ParseXmlFileImpl();
+//        }
+//        return parseXmlFile.parseXmlFile(xmlFilePath);
 
-        return parseXmlFile.parseXmlFile(xmlFilePath);
+        //自定义SPI
+        MiniServiceLoader miniServiceLoader = MiniServiceLoader.getInstance();
+        IParseXmlFile iParseXmlFile = miniServiceLoader.get(IParseXmlFile.class, "key");
+        return iParseXmlFile.parseXmlFile(xmlFilePath);
+
     }
 
     /**
