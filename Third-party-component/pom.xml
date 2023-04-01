@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.frost2</groupId>
-    <artifactId>jar-provider</artifactId>
+    <artifactId>Third-party-component</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Third-party-component</name>
     <description>Demo project for Spring Boot</description>

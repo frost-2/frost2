@@ -12,6 +12,7 @@
     <groupId>com</groupId>
     <artifactId>frost2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>frost2</name>
     <description>Personal Learning Project</description>
 
